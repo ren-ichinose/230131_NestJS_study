@@ -16,8 +16,8 @@ services:
     ports:
       - 5432:5432
     volumes:
-      - ../frea_market_0131_db/postgres/init.d:/docker-entrypoint-initdb.d
-      - ../frea_market_0131_db/postgres/pgdata:/var/lib/postgresql/data
+      - ../230131_NestJS_study_db/postgres/init.d:/docker-entrypoint-initdb.d
+      - ../230131_NestJS_study_db/postgres/pgdata:/var/lib/postgresql/data
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
@@ -35,6 +35,6 @@ services:
       PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
       PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
     volumes:
-      - ../frea_market_0131_db/pgadmin:/var/lib/pgadmin
+      - ../230131_NestJS_study_db/pgadmin:/var/lib/pgadmin
     depends_on:
       - db
