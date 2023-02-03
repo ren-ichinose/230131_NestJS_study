@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { ItemStatus } from './item-status.enum';
 import { Item } from './item.model';
 import { v4 as uuid } from 'uuid';
@@ -12,7 +12,14 @@ export class ItemsService {
     }
 
     findById(id: string): Item {
-        return this.items.find( item => item.id === id );
+        const found = this.items.find( item => item.id === id );
+        if (!found) {
+            throw new NotFoundException({
+                "statusCode": 404,
+                "message": "商品が見つかりませんでした"
+            });
+        }
+        return found;
     }
 
     creat(creatItemDto: CreatItemDto): Item {
