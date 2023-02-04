@@ -19,8 +19,8 @@ export class Item {
     status: ItemStatus;
 
     @Column()
-    creatAt: string;
+    createdAt: string;
 
     @Column()
-    updateAt: string;
+    updatedAt: string;
 }
