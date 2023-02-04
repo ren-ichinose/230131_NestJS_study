@@ -1,46 +1,45 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreatItemDto } from './dto/creat-item.dto';
+import { Item } from '../entities/item.entity';
+import { ItemRepository } from './item.repository';
 import { ItemStatus } from './item-status.enum';
-import { Item } from './item.model';
-import { v4 as uuid } from 'uuid';
 
 @Injectable()
 export class ItemsService {
-    private items: Item[] = [];
+    constructor(private readonly itemRepository: ItemRepository) {}
     
-    findAll(){
-        return this.items;
+    async findAll(): Promise<Item[]>{
+        return await this.itemRepository.find();
     }
 
-    findById(id: string): Item {
-        const found = this.items.find( item => item.id === id );
+    async findById(id: string): Promise<Item> {
+        const found = await this.itemRepository.findOne(id);
         if(!found) {
-            throw new NotFoundException();
+            throw new NotFoundException({
+                "statusCode": 404,
+                "message": "商品が見つかりませんでした"
+            });
         }
         return found;
     }
 
-    creat(creatItemDto: CreatItemDto): Item {
-        const item: Item = {
-            id: uuid(),
-            ...creatItemDto,
-            status: ItemStatus.ON_SALE,
-        }
-        this.items.push(item);
-        return item;
+    async creat(creatItemDto: CreatItemDto): Promise<Item> {
+        return await this.itemRepository.creatItem(creatItemDto);
     }
 
-    updateStatus(id: string): Item {
-        const item = this.findById(id);
+    async updateStatus(id: string): Promise<Item> {
+        const item = await this.findById(id);
         item.status = 
             item.status === ItemStatus.ON_SALE ?
             ItemStatus.SOLD_OUT :
             ItemStatus.ON_SALE;
+        item.updatedAt = new Date().toISOString();
+        await this.itemRepository.save(item);
         return item;
     }
 
-    delete(id: string): void {
-        this.items = this.items.filter( item => item.id !== id );
+    async delete(id: string): Promise<void> {
+        await this.itemRepository.delete({ id })
     }
 
 }
