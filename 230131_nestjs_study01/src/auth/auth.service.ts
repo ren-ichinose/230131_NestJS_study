@@ -25,8 +25,8 @@ export class AuthService {
         const user = await this.userRepository.findOne({ username });
 
         if(user && (await bcrypt.compare(password, user.password))) {
-            const payload = { id: user.id, username: user.username};
-            const accessToken = await this.jwtService.sign(payload);
+            const payload = { id: user.id, username: user.username };
+            const accessToken = this.jwtService.sign(payload);
             return { accessToken };
         }
         throw new UnauthorizedException('ユーザー名またはパスワードを確認してください');
