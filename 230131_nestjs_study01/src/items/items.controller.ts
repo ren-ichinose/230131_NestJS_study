@@ -22,6 +22,7 @@ export class ItemsController {
     @Post()
     @UseGuards(JwtAuthGuard)
     async create(@Body() creatItemDto: CreatItemDto, @GetUser() user: User): Promise<Item> {
+        console.log(user)
         return await this.itemsService.create(creatItemDto);
     }
 
