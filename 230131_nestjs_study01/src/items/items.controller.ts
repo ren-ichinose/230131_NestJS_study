@@ -23,20 +23,19 @@ export class ItemsController {
     @Post()
     @UseGuards(JwtAuthGuard)
     async create(@Body() creatItemDto: CreatItemDto, @GetUser() user: User): Promise<Item> {
-        console.log(user)
         return await this.itemsService.create(creatItemDto, user);
     }
 
     @Patch(':id')
     @UseGuards(JwtAuthGuard)
-    async update(@Param('id', ParseUUIDPipe) id: string): Promise<Item> {
-        return await this.itemsService.updateStatus(id);
+    async update(@Param('id', ParseUUIDPipe) id: string, @GetUser() user: User): Promise<Item> {
+        return await this.itemsService.updateStatus(id, user);
     }
 
     @Delete(':id')
     @UseGuards(JwtAuthGuard)
-    async delete(@Param('id', ParseUUIDPipe) id: string): Promise<void> {
-        return await this.itemsService.delete(id);
+    async delete(@Param('id', ParseUUIDPipe) id: string, @GetUser() user: User): Promise<void> {
+        return await this.itemsService.delete(id, user);
     }
 
 }
