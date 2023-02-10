@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, ParseUUIDPipe, Patch, Post, UseGuards } from '@nestjs/common';
+import { Body, ClassSerializerInterceptor, Controller, Delete, Get, Param, ParseUUIDPipe, Patch, Post, UseGuards, UseInterceptors } from '@nestjs/common';
 import { CreatItemDto } from './dto/creat-item.dto';
 import { Item } from '../entities/item.entity';
 import { ItemsService } from './items.service';
@@ -7,6 +7,7 @@ import { GetUser } from 'src/auth/decorator/get-decorator';
 import { User } from 'src/entities/user.entity';
 
 @Controller('items')
+@UseInterceptors(ClassSerializerInterceptor)
 export class ItemsController {
     constructor(private readonly itemsService: ItemsService) {}    
     @Get()
