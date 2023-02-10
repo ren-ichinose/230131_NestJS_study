@@ -4,7 +4,6 @@ import { User } from "./user.entity";
 
 @Entity()
 export class Item {
-
     @PrimaryGeneratedColumn('uuid')
     id: string;
 
