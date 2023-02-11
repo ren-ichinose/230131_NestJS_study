@@ -3,6 +3,7 @@ import { CreatItemDto } from './dto/creat-item.dto';
 import { ItemStatus } from './item-status.enum';
 import { Item } from '../entities/item.entity';
 import { ItemRepository } from './imte.repository';
+import { User } from 'src/entities/user.entity';
 
 @Injectable()
 export class ItemsService {
@@ -22,8 +23,8 @@ export class ItemsService {
         }
         return found;
     }
-    async creat(creatItemDto: CreatItemDto): Promise<Item>{
-        return this.itemRepository.creatItem(creatItemDto);
+    async creat(creatItemDto: CreatItemDto, user: User): Promise<Item>{
+        return this.itemRepository.creatItem(creatItemDto, user);
     }
 
     async updateStatus(id: string): Promise<Item> {
