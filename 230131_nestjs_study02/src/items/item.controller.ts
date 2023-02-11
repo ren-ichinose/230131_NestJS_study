@@ -1,6 +1,9 @@
 import { Body, ClassSerializerInterceptor, Controller, Delete, Get, Param, ParseUUIDPipe, Patch, Post, UseGuards, UseInterceptors } from '@nestjs/common';
 import { GetUser } from 'src/auth/decorator/get-decorator';
+import { Role } from 'src/auth/decorator/role.decorator';
 import { JwtAuthGurad } from 'src/auth/guards/jwt-auth.guard';
+import { RolesGuard } from 'src/auth/guards/roles.guard';
+import { UserStatus } from 'src/auth/user-status.enum';
 import { Item } from 'src/entities/item.entity';
 import { User } from 'src/entities/user.entity';
 import { CreatItemDto } from './dto/creat-item.dto';
@@ -22,7 +25,8 @@ export class ItemsController {
     }
 
     @Post()
-    @UseGuards(JwtAuthGurad)
+    @Role(UserStatus.PREMIUM)
+    @UseGuards(JwtAuthGurad,RolesGuard)
     async creat(
         @Body() creatItemDto: CreatItemDto,
         @GetUser() user: User
